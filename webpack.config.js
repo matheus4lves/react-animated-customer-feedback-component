@@ -3,7 +3,7 @@ let mode = process.env.npm_lifecycle_event;
 const path = require("path");
 
 let config = {
-  entry: "./src/index.js",
+  entry: "./src/index.jsx",
   output: {
     path: path.resolve(__dirname, "build"),
     filename: "bundle.js",
@@ -11,12 +11,12 @@ let config = {
   module: {
     rules: [
       {
-        test: /\.m?(js|jsx)$/,
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
           loader: "babel-loader",
           options: {
-            presets: [["@babel/preset-env", { targets: "defaults" }], "@babel/preset-react"],
+            presets: ["@babel/preset-env", "@babel/preset-react"],
           },
         },
       },
@@ -38,7 +38,6 @@ if (mode === "dev") {
     open: {
       app: {
         name: "firefox",
-        arguments: ["--private-window"],
       },
     },
     port: 3000,
