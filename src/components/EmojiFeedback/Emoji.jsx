@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import lottie from "lottie-web";
 import { motion } from "framer-motion";
 import styled from "styled-components";
-
+import md5 from "crypto-js/md5";
 import selectAnimationData from "../../lotties";
 
 const NORMAL_SCALE = 1;
@@ -10,25 +10,39 @@ const HOVERED_SCALE = 1.3;
 const SELECTED_SCALE = 1.5;
 
 const Emoji = ({ reaction, isSelected, setActiveReaction }) => {
-  const handleClick = () => {
-    if (isSelected) {
-      setActiveReaction("");
-    } else {
-      setActiveReaction(reaction);
-    }
-  };
+  // Generate an id for the element that will contain the animation
+  const id = "id-" + md5(reaction).toString();
 
   useEffect(() => {
+    // Set up the animation data
     const animationOptions = {
       animationData: selectAnimationData(reaction),
       loop: true,
       autoplay: false,
       renderer: "svg",
-      container: document.querySelector(`#${reaction}`),
+      container: document.querySelector(`#${id}`),
+      name: reaction,
     };
 
+    // Load the animantion
     lottie.loadAnimation(animationOptions);
   }, []);
+
+  const handleClick = () => {
+    // Check if the clicked emoji is already selected
+    // If so, deselect it
+    if (isSelected) {
+      setActiveReaction("");
+      // If not, select it and play the reaction
+    } else {
+      setActiveReaction(reaction);
+      // Play the animation when the emoji is selected
+      lottie.play(reaction);
+    }
+  };
+
+  // Stop the animation when the emoji is deselected
+  if (!isSelected) lottie.stop(reaction);
 
   return (
     <EmojiWrapper
@@ -40,7 +54,7 @@ const Emoji = ({ reaction, isSelected, setActiveReaction }) => {
       }}
       onClick={handleClick}
     >
-      <div id={reaction} style={{ width: 100, height: 100 }} />
+      <StyledEmoji id={id} />
       {isSelected && <EmojiLabel>{reaction}</EmojiLabel>}
     </EmojiWrapper>
   );
@@ -58,9 +72,15 @@ const EmojiLabel = styled.p`
   bottom: -32px;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-family: Plus Jakarta Sans Bold;
+  width: 100%;
+  font-family: "Plus Jakarta Sans Bold";
   font-size: 1rem;
   user-select: none;
+`;
+
+const StyledEmoji = styled.div`
+  width: auto;
+  height: 100px;
 `;
 
 export default Emoji;

@@ -1,3 +1,3 @@
-const reactions = ["aweful", "bad", "ok-ok", "good", "amazing"];
+const reactions = ["Aweful", "Bad", "OK OK", "Good", "Amazing"];
 
 export { reactions };
