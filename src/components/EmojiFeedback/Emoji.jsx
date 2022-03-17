@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import lottie from "lottie-web";
 import { motion } from "framer-motion";
 import styled from "styled-components";
-import okOk from "../../lotties/ok-ok.json";
 
 import selectAnimationData from "../../lotties";
 
@@ -21,17 +20,30 @@ const Emoji = ({ reaction, isSelected, setActiveReaction }) => {
 
   useEffect(() => {
     const animationOptions = {
-      animationData: okOk,
+      animationData: selectAnimationData(reaction),
       loop: true,
-      autoplay: true,
+      autoplay: false,
       renderer: "svg",
-      container: document.querySelector("#ok-ok"),
+      container: document.querySelector(`#${reaction}`),
     };
 
     lottie.loadAnimation(animationOptions);
   }, []);
 
-  return <div id="ok-ok" style={{ width: 200, height: 200 }} />;
+  return (
+    <EmojiWrapper
+      whileHover={{
+        scale: isSelected ? SELECTED_SCALE : HOVERED_SCALE,
+      }}
+      animate={{
+        scale: isSelected ? SELECTED_SCALE : NORMAL_SCALE,
+      }}
+      onClick={handleClick}
+    >
+      <div id={reaction} style={{ width: 100, height: 100 }} />
+      {isSelected && <EmojiLabel>{reaction}</EmojiLabel>}
+    </EmojiWrapper>
+  );
 };
 
 const EmojiWrapper = styled(motion.div)`

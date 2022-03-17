@@ -16,7 +16,9 @@ const EmojiFeedback = ({ activeReaction, setActiveReaction }) => {
             set to the text that represents that reaction. Only the emoji that has its
             reaction prop equals to the activeReaction will have its isSelectec prop
             set to true. */}
-          <Emoji />
+          {reactions.map(reaction => (
+            <Emoji reaction={reaction} key={reaction} isSelected={activeReaction === reaction} setActiveReaction={setActiveReaction} />
+          ))}
         </Emojis>
         <Button isSelected={!!activeReaction}>Submit</Button>
       </Content>

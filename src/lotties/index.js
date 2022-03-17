@@ -7,7 +7,7 @@ import okOkAnimationData from "./ok-ok.json";
 import { reactions } from "../components/EmojiFeedback/data";
 
 const selectAnimationData = reaction => {
-  switch (reactions) {
+  switch (reaction) {
     case reactions[0]:
       return awefulAnimationData;
     case reactions[1]:
